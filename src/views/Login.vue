@@ -83,8 +83,8 @@
                     this.ruleForm2.account = "test2";
                     this.ruleForm2.checkPass = "test2";
                 } else {
-                    this.ruleForm2.account = "blogadmin";
-                    this.ruleForm2.checkPass = "blogadmin";
+                    this.ruleForm2.account = "admin";
+                    this.ruleForm2.checkPass = "test";
                 }
             },
             //这个是用来测试 mock 的，很简单，只需要在 main.js 中开启服务即可
@@ -225,7 +225,6 @@
 
                 getNavigationBar(loginParams).then(data => {
                     _this.logining = false;
-
 
                     if (!data.success) {
                         _this.$message({

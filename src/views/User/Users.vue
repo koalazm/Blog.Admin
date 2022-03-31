@@ -143,15 +143,15 @@
         components: { Toolbar },
         data() {
             return {
+                page: 1,
                 filters: {
                     name: ''
                 },
+                total: 0,
                 users: [],
                 roles: [],
-                total: 0,
                 buttonList: [],
                 currentRow: null,
-                page: 1,
                 listLoading: false,
                 sels: [],//列表选中列
 

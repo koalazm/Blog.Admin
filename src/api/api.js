@@ -6,7 +6,8 @@ import Vue from 'vue';
 
 import applicationUserManager from "../Auth/applicationusermanager";
 
-let base = '';
+//let base = '';
+ let base = 'http://localhost:9291';
 // 如果是IIS部署，用这个，因为 IIS 只能是 CORS 跨域，不能代理
 // let base = process.env.NODE_ENV=="production"? 'http://localhost:8081':'';
 
@@ -403,4 +404,75 @@ export const pushTestMsg = params => {
 };
 export const pushCardMsg = params => {
     return axios.post(`${base}/api/WeChat/PushCardMsg`, params);
+};
+
+
+// 文件管理
+export const getFileListPage = params => {
+    return axios.get(`${base}/api/zrzyfile/GetPagedFileList`, {params: params});
+};
+export const editFile = params => {
+    return axios.put(`${base}/api/zrzyfile/put`, params);
+};
+export const addFile = params => {
+    return axios.post(`${base}/api/zrzyfile/post`, params);
+};
+export const removeFile = params => {
+    console.log("removeFile:" + params);
+    return axios.delete(`${base}/api/zrzyfile/delete`, {params: params});
+};
+export const batchRemoveFile = params => {
+    console.log("batchRemoveFile:" + params);
+    return axios.delete(`${base}/api/Claims/BatchDelete`, {params: params});//没做
+};
+export const downloadFile = params => {
+    console.log("downloadFile:" + params);
+    return axios.get(`${base}/api/ZrzyFile/DownFile`, {params: params});//没做
+};
+export const getFilePath = params => {
+    console.log("getFilePath:" + params);
+    return axios.get(`${base}/api/ZrzyFile/GetFilePath`, {params: params});//没做
+};
+
+//地图服务管理
+export const getMapServerListPage = params => {
+    return axios.get(`${base}/api/zrzymapserver/get`, {params: params});
+};
+export const editMapServer = params => {
+    return axios.put(`${base}/api/zrzymapserver/put`, params);
+};
+export const addMapServer = params => {
+    return axios.post(`${base}/api/zrzymapserver/post`, params);
+};
+export const removeMapServer = params => {
+    return axios.delete(`${base}/api/zrzymapserver/delete`, {params: params});
+};
+export const batchRemoveMapServer = params => {
+    return axios.delete(`${base}/api/zrzymapserver/batchdelete`, {params: params});//没做
+};
+
+//工程管理
+// /api/ZrzyProject/Delete/{id}
+export const getProjectListPage = params => {
+    return axios.get(`${base}/api/zrzyproject/get`, {params: params});
+};
+export const editProject = params => {
+    return axios.put(`${base}/api/zrzyproject/put`, params);
+};
+export const addProject = params => {
+    return axios.post(`${base}/api/zrzyproject/post`, params);
+};
+export const removeProject = params => {
+    return axios.delete(`${base}/api/zrzyproject/delete`, {params: params});
+};
+export const batchRemoveProject = params => {
+    return axios.delete(`${base}/api/zrzyproject/batchdelete`, {params: params});//没做
+};
+
+export const getUserIds = params => {
+    return axios.get(`${base}/api/zrzyproject/GetUserIdsByProjectId`, {params: params});
+};
+
+export const addProjectUsers = params => {
+    return axios.post(`${base}/api/zrzyproject/ProjectUsersAssign`, params);
 };

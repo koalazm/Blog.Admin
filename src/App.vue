@@ -367,7 +367,7 @@
             },
         },
         mounted() {
-            console.log(this.$route)
+            // console.log(this.$route)
 
             var tags = sessionStorage.getItem('Tags') ? JSON.parse(sessionStorage.getItem('Tags')) : [];
 

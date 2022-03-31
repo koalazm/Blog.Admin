@@ -206,8 +206,8 @@
                     });
                     return false;
                 }
-                console.log(this.assignBtns);
-                console.log(pids);
+                // console.log(this.assignBtns);
+                // console.log(pids);
               
                 let para = {pids: pids, rid: this.roleid}
                 if (para.rid > 0 && para.pids.length > 0) {
