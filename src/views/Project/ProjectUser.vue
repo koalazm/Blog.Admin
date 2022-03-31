@@ -67,8 +67,6 @@
 
     export default {
         data() {
-
-            const data = [];
             return {
                 page: 1,
                 filters: {
@@ -79,38 +77,8 @@
                 projects: [],
                 projectid: 0,
                 users: [],
-                btns: [],
-                assigns: [],
-                checked1: false,
                 loadingSaveStr:'保存',
                 loadingSave:false,
-                assignBtns: [],
-                defaultProps: {
-                    children: 'children',
-                    label: 'label',
-                    btns: 'btns',
-                },
-                selectedPermissions: [],
-                currentRoleCode: "",
-                stores: {
-                    role: {
-                        data: []
-                    },
-                    permissionTree: {
-                        data: []
-                    }
-                },
-                buttonProps: {
-                    type: "default",
-                    size: "small"
-                },
-                selectProject: {},
-                menuData: [],
-                menuSelections: [],
-                menuLoading: false,
-                authLoading: false,
-                checkAll: false,
-                currentRoleMenus: [],
             }
         },
         methods: {
@@ -223,33 +191,6 @@
                     }
                     
                 });
-            },
-            append(data) {
-                const newChild = {id: id++, label: 'testtest', children: []};
-                if (!data.children) {
-                    this.$set(data, 'children', []);
-                }
-                data.children.push(newChild);
-            },
-
-            remove(node, data) {
-                const parent = node.parent;
-                const children = parent.data.children || parent.data;
-                const index = children.findIndex(d => d.id === data.id);
-                children.splice(index, 1);
-            },
-           
-            renderContent(h, { node, data, store }) {
-                return (
-                    <div class="column-container">
-                    <span style="text-algin:center;margin-right:80px;">{data.label}</span>
-                <span style="text-algin:center;margin-right:80px;">
-                    <el-tag type={data.isbtn ?'success':'info'} size="small">
-                {!data.isbtn ?'菜单':'按钮'}
-            </el-tag>
-                </span>
-
-                </div>);
             },
         },
         mounted() {
