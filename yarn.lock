@@ -3581,6 +3581,11 @@ esrecurse@^4.1.0:
   dependencies:
     estraverse "^5.2.0"
 
+esri-loader@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.npmmirror.com/esri-loader/-/esri-loader-3.5.0.tgz#f536cbaaf676d54f6b05a706e51ececd9303ce05"
+  integrity sha512-rIXyT51x/co86DPORKBMMldJrdLjghDepJ3WjDVTr2yZXBbghMbGgNA8yIQ9Pd/Gw6/fMgF9YHZU+wjRHRCDoA==
+
 estraverse@^4.1.1, estraverse@^4.2.0:
   version "4.3.0"
   resolved "https://registry.npmmirror.com/estraverse/download/estraverse-4.3.0.tgz?cache=0&sync_timestamp=1635237716974&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Festraverse%2Fdownload%2Festraverse-4.3.0.tgz#398ad3f3c5a24948be7725e83d11a7de28cdbd1d"

@@ -6,11 +6,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-      token: null,
-      tokenExpire: null,
-      tagsStoreList: [],
-      language: Cookies.get('language') || 'en',
-
+        token: null,
+        tokenExpire: null,
+        tagsStoreList: [],
+        language: Cookies.get('language') || 'en',
+        map: null,
+        view: null
   },
   mutations: {
       saveToken(state, data) {
@@ -29,12 +30,22 @@ export default new Vuex.Store({
           state.language = language
           Cookies.set('language', language)
       },
-
+        initMap(state, payload) {
+            state.map = payload;
+        },
+        initView(state, payload) {
+            state.view = payload;
+      },
   },
   actions: {
       setLanguage({ commit }, language) {
           commit('SET_LANGUAGE', language)
       },
+      goto({ state }, position) {
+          if (this.state.view) {
+              this.state.view.goTo(position);
+          }
+      }
 
   }
 })

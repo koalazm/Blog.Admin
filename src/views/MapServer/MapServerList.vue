@@ -6,7 +6,7 @@
         <el-col :span="isPreviewOpen?12:24">
             <el-table :data="mapServers" highlight-current-row 
             @current-change="selectCurrentRow"
-            v-loading="listLoading" @selection-change="selsChange"
+            v-loading="listLoading" @selection-change="selectionChange"
                     style="width: 100%;">
                 <el-table-column type="selection" width="50">
                 </el-table-column>
@@ -39,7 +39,9 @@
 
         </el-col>
         <el-col :span="isPreviewOpen?12:0">
+            <div id="mapDiv">
 
+            </div>
         </el-col>
          <!--编辑界面-->
         <el-dialog
@@ -123,11 +125,14 @@
     import {getMapServerListPage, addMapServer, batchRemoveMapServer, editMapServer, removeMapServer } from '../../api/api';
     import { getButtonList } from "../../promissionRouter";
     import Toolbar from "../../components/Toolbar";
-
+    import {loadModules} from 'esri-loader';
+    import store from "../../store";
+    var storeTemp= store;
     export default {
         components: { Toolbar },
         data() {
             return {
+                
                 filters: {
                     name: ''
                 },
@@ -142,7 +147,7 @@
                 currentRow: null,
                 page: 1,
                 listLoading: false,
-                sels: [],//列表选中列
+                sels: [],//列表选中行
                 
                 editFormVisible: false, //编辑界面是否显示
                 editLoading: false,
@@ -182,6 +187,32 @@
         methods: {
             selectCurrentRow(val) {
                 this.currentRow = val;
+                if(this.isPreviewOpen){
+                    loadModules([ "esri/layers/MapImageLayer","esri/geometry/Point"]).then(([MapImageLayer,Point])=>{
+                        //清除所有图层
+                        storeTemp.state.map.removeAll();
+
+                        let tileLayer = new MapImageLayer({
+                            url: this.currentRow.ServiceUrl
+                        })
+
+                        tileLayer.when(function(){
+                            let center = tileLayer.fullExtent.center;
+                            storeTemp.state.view.goTo({center: center, scale:tileLayer.minScale}).then(()=>{
+                                let curZoom =storeTemp.state.view.zoom + 2;
+                                console.log(storeTemp.state.view.zoom, curZoom)
+                                if(curZoom < 20)
+                                {
+                                    storeTemp.state.view.zoom = curZoom;
+                                }
+                            });
+
+                        });
+                        //添加新图层
+                        storeTemp.state.map.add(tileLayer);
+                    }); 
+                }
+                
             },
             callFunction(item) {
                 this.filters = {
@@ -209,6 +240,27 @@
                     //NProgress.done();
                 });
             },
+            handleGoto(){
+                if(!this.isPreviewOpen)
+                {
+                    this.$message({
+                        message: "请先点击预览按钮，打开地图窗口",
+                        type: "error"
+                    });
+                    return;
+                }
+                let options = {
+                    url:'https://js.arcgis.com/4.23/',
+                    css:'https://js.arcgis.com/4.23/esri/themes/light/main.css'
+                };
+                loadModules([ "esri/geometry/Point"],options).then(([Point])=>{
+                    let pt = new Point({
+                        latitude: 35.3612,
+                        longitude: 107.3572
+                    });
+                    this.$store.dispatch('goto', pt)
+                });
+            },
             //预览
             handlePreview(){
                 let row = this.currentRow;
@@ -217,12 +269,37 @@
                     message: "请选择要预览的服务！",
                     type: "error"
                     });
-
                     return;
                 }
-
                 this.isPreviewOpen = !this.isPreviewOpen
 
+                if(this.isPreviewOpen)
+                {
+                     loadModules([ "esri/layers/MapImageLayer"]).then(([MapImageLayer])=>{
+
+                         //清除所有图层
+                        storeTemp.state.map.removeAll();
+
+                        let tileLayer = new MapImageLayer({
+                            url: row.ServiceUrl
+                        })
+
+                        tileLayer.when(function(){
+                            let center = tileLayer.fullExtent.center;
+                            storeTemp.state.view.goTo({center: center, scale:tileLayer.minScale}).then(()=>{
+                                let curZoom =storeTemp.state.view.zoom + 2;
+                                console.log(storeTemp.state.view.zoom, curZoom)
+                                if(curZoom < 20)
+                                {
+                                    storeTemp.state.view.zoom = curZoom;
+                                }
+                            });
+                        });
+                        //添加新图层
+                        storeTemp.state.map.add(tileLayer);
+                     });
+                      
+                }
             },
             //删除
             handleDel(){
@@ -386,7 +463,7 @@
                     }
                 });
             },
-            selsChange: function (sels) {
+            selectionChange: function (sels) {
                 this.sels = sels;
             },
             //批量删除
@@ -422,11 +499,50 @@
             this.buttonList = getButtonList(this.$route.path, routers);
             // console.log(this.$route.path)
             // console.log(routers);
+
+            let options = {
+                url:'https://js.arcgis.com/4.23/',
+                css:'https://js.arcgis.com/4.23/esri/themes/light/main.css'
+            };
+
+            loadModules([ "esri/Map", "esri/views/MapView","esri/widgets/ScaleBar"],options)
+            .then(([Map, MapView, ScaleBar])=>{
+                let map = new Map({
+                    basemap: "topo-vector"
+                });
+
+                let view = new MapView({
+                    container: "mapDiv",
+                    map: map
+                });
+
+                // view.spatialReference = new SpatialReference({
+                //     wkid: 4490
+                // });
+
+                let scaleBar = new ScaleBar({
+                    view: view
+                });
+
+                view.ui.add(scaleBar, {
+                    position: "bottom-left"
+                });
+
+                this.$store.commit("initMap", map);
+                this.$store.commit("initView", view);
+            });
         }
     }
 
 </script>
 
 <style scoped>
-
+    #mapDiv{
+        width: 50%;
+        height: 90%;
+        margin: 0;
+        padding: 0;
+        display: inline-flex;
+        position: absolute;
+    }
 </style>
