@@ -311,8 +311,7 @@
             });
             },
             addSubmit: function(){
-                this.addFormVisible = false;
-                this.getFiles();
+                
             },
             selsChange: function (sels) {
                 this.sels = sels;
@@ -347,17 +346,21 @@
             },
             //文件上传成功时的钩子
             upLoadSuccess(response, file, fileList) {
+                
                 if (response.success) {
                     this.$message({
                         message: response.msg,
                         type: "success"
                     });
+                    this.addFormVisible = false;
+                    this.getFiles();
                 } else {
                     this.$message({
                         message: response.msg,
                         type: "error"
                     });
                 }
+                
             },
             //文件上传失败时的钩子
             upLoadError(response, file, fileList) {
