@@ -468,11 +468,29 @@ export const removeProject = params => {
 export const batchRemoveProject = params => {
     return axios.delete(`${base}/api/zrzyproject/batchdelete`, {params: params});//没做
 };
-
+//根据项目编号获取用户编号列表
 export const getUserIds = params => {
     return axios.get(`${base}/api/zrzyproject/GetUserIdsByProjectId`, {params: params});
 };
 
 export const addProjectUsers = params => {
     return axios.post(`${base}/api/zrzyproject/ProjectUsersAssign`, params);
+};
+
+//根据项目编号获取文件编号列表
+export const getFileIds = params => {
+    return axios.get(`${base}/api/zrzyproject/GetFilesByProjectId`, {params: params});
+};
+
+export const addProjectFiles = params => {
+    return axios.post(`${base}/api/zrzyproject/ProjectFilesAssign`, params);
+};
+
+//根据项目编号获取地图服务编号列表
+export const getMapServerIds = params => {
+    return axios.get(`${base}/api/zrzyproject/GetMapServersByProjectId`, {params: params});
+};
+
+export const addProjectMapServers = params => {
+    return axios.post(`${base}/api/zrzyproject/ProjectMapServersAssign`, params);
 };
