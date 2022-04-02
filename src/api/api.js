@@ -6,10 +6,10 @@ import Vue from 'vue';
 
 import applicationUserManager from "../Auth/applicationusermanager";
 
-//let base = '';
- let base = 'http://localhost:9291';
+//let base = ''; //nginx 部署时为空
+let base = 'http://localhost:9291';
 // 如果是IIS部署，用这个，因为 IIS 只能是 CORS 跨域，不能代理
-// let base = process.env.NODE_ENV=="production"? 'http://localhost:8081':'';
+// let base = process.env.NODE_ENV=="production"? 'http://localhost:9291':'';
 
 
 // 请求延时
@@ -479,7 +479,7 @@ export const addProjectUsers = params => {
 
 //根据项目编号获取文件编号列表
 export const getFileIds = params => {
-    return axios.get(`${base}/api/zrzyproject/GetFilesByProjectId`, {params: params});
+    return axios.get(`${base}/api/zrzyproject/GetFileIdsByProjectId`, {params: params});
 };
 
 export const addProjectFiles = params => {
@@ -488,7 +488,7 @@ export const addProjectFiles = params => {
 
 //根据项目编号获取地图服务编号列表
 export const getMapServerIds = params => {
-    return axios.get(`${base}/api/zrzyproject/GetMapServersByProjectId`, {params: params});
+    return axios.get(`${base}/api/zrzyproject/GetMapServerIdsByProjectId`, {params: params});
 };
 
 export const addProjectMapServers = params => {
